@@ -33,3 +33,13 @@ variable "sg_inbound_rules" {
     }
   ]
 }
+
+variable "domain_name" {
+  type        = string
+  description = "The domain name to use"
+  default     = "tf.tvminh.co"
+}
+
+variable "acm_certificate_arn" {
+  default = "arn:aws:acm:us-east-1:997160136177:certificate/100e66f7-485e-496e-948b-e409426cb028"
+}
