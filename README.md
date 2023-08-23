@@ -1,9 +1,12 @@
-# Automate Terraform with GitHub Actions
+# Learn Terraform
+
+## Setup Simple website architect with CloudFront + ALB + ASG
+[Instruction](./cloudfront-alb-asg/README.md)
+
+![Demo Architecture](./cloudfront-alb-asg/architecture-demo.png)  
 
 
-This repo is a companion repo to the [Automate Terraform with GitHub Actions](https://learn.hashicorp.com/tutorials/terraform/github-actions?in=terraform/automation).
+## Setup Simple ECS cluster
+[Instruction](./alb-ecs/README.md)
 
-
-A demo infrastructure with Cloudfront + ALB + ASG for simple http server
-
-![Demo Architecture](./architecture-demo.png)  
+![Demo Architecture](./alb-ecs//terraform-ecs-cluster.png)  
