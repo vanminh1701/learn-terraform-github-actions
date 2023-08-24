@@ -5,3 +5,8 @@ output "web-address" {
 output "asg_name" {
   value = aws_autoscaling_group.demo-asg.name
 }
+
+output "cloudfront-dns-name" {
+  description = "CloudFront Distribution URL"
+  value = aws_cloudfront_distribution.cf_dist.domain_name
+}

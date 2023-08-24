@@ -1,3 +1,20 @@
+resource "aws_autoscaling_group" "demo-asg" {
+  name                      = "demo-asg"
+  max_size                  = 2
+  min_size                  = 1
+  desired_capacity          = 1
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  force_delete              = true
+  launch_configuration      = aws_launch_configuration.demo-launch-config.name
+  vpc_zone_identifier       = module.vpc.public_subnets
+}
+
+resource "aws_autoscaling_attachment" "asg-attachment" {
+  autoscaling_group_name = aws_autoscaling_group.demo-asg.id
+  lb_target_group_arn    = aws_lb_target_group.demo-web-target.arn
+}
+
 resource "aws_launch_configuration" "demo-launch-config" {
   name_prefix   = "asg-instance-"
   image_id      = "ami-09e67e426f25ce0d7"
@@ -20,19 +37,25 @@ resource "aws_launch_configuration" "demo-launch-config" {
   }
 }
 
-resource "aws_autoscaling_group" "demo-asg" {
-  name                      = "demo-asg"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
-  health_check_type         = "ELB"
-  desired_capacity          = 1
-  force_delete              = true
-  launch_configuration      = aws_launch_configuration.demo-launch-config.name
-  vpc_zone_identifier       = module.vpc.public_subnets
+
+resource "aws_security_group" "web-sg" {
+  name = "${random_pet.sg.id}-sg"
+
+  ingress {
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb-sg.id]
+  }
+
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  vpc_id = module.vpc.vpc_id
 }
 
-resource "aws_autoscaling_attachment" "asg-attachment" {
-  autoscaling_group_name = aws_autoscaling_group.demo-asg.id
-  lb_target_group_arn    = aws_lb_target_group.demo-web-target.arn
-}
